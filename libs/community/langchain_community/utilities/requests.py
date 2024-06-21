@@ -6,6 +6,7 @@ import aiohttp
 import requests
 from langchain_core.pydantic_v1 import BaseModel, Extra
 from requests import Response
+from security import safe_requests
 
 
 class Requests(BaseModel):
@@ -28,8 +29,7 @@ class Requests(BaseModel):
 
     def get(self, url: str, **kwargs: Any) -> requests.Response:
         """GET the URL and return the text."""
-        return requests.get(
-            url, headers=self.headers, auth=self.auth, verify=self.verify, **kwargs
+        return safe_requests.get(url, headers=self.headers, auth=self.auth, verify=self.verify, **kwargs
         )
 
     def post(self, url: str, data: Dict[str, Any], **kwargs: Any) -> requests.Response:

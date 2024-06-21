@@ -3,11 +3,10 @@ from __future__ import annotations
 from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING, Iterator, Optional, Union
-
-import requests
 from langchain_core.documents import Document
 
 from langchain_community.document_loaders.base import BaseLoader
+from security import safe_requests
 
 if TYPE_CHECKING:
     import assemblyai
@@ -140,8 +139,7 @@ class AssemblyAIAudioLoaderById(BaseLoader):
 
         if self.transcript_format == TranscriptFormat.TEXT:
             try:
-                transcript_response = requests.get(
-                    f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}",
+                transcript_response = safe_requests.get(f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}",
                     headers=HEADERS,
                 )
                 transcript_response.raise_for_status()
@@ -154,8 +152,7 @@ class AssemblyAIAudioLoaderById(BaseLoader):
             yield Document(page_content=transcript, metadata=transcript_response.json())
         elif self.transcript_format == TranscriptFormat.PARAGRAPHS:
             try:
-                paragraphs_response = requests.get(
-                    f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/paragraphs",
+                paragraphs_response = safe_requests.get(f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/paragraphs",
                     headers=HEADERS,
                 )
                 paragraphs_response.raise_for_status()
@@ -170,8 +167,7 @@ class AssemblyAIAudioLoaderById(BaseLoader):
 
         elif self.transcript_format == TranscriptFormat.SENTENCES:
             try:
-                sentences_response = requests.get(
-                    f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/sentences",
+                sentences_response = safe_requests.get(f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/sentences",
                     headers=HEADERS,
                 )
                 sentences_response.raise_for_status()
@@ -186,8 +182,7 @@ class AssemblyAIAudioLoaderById(BaseLoader):
 
         elif self.transcript_format == TranscriptFormat.SUBTITLES_SRT:
             try:
-                srt_response = requests.get(
-                    f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/srt",
+                srt_response = safe_requests.get(f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/srt",
                     headers=HEADERS,
                 )
                 srt_response.raise_for_status()
@@ -201,8 +196,7 @@ class AssemblyAIAudioLoaderById(BaseLoader):
 
         elif self.transcript_format == TranscriptFormat.SUBTITLES_VTT:
             try:
-                vtt_response = requests.get(
-                    f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/vtt",
+                vtt_response = safe_requests.get(f"https://api.assemblyai.com/v2/transcript/{self.transcript_id}/vtt",
                     headers=HEADERS,
                 )
                 vtt_response.raise_for_status()

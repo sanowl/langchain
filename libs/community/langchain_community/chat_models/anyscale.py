@@ -5,8 +5,6 @@ import logging
 import os
 import sys
 from typing import TYPE_CHECKING, Dict, Optional, Set
-
-import requests
 from langchain_core.messages import BaseMessage
 from langchain_core.pydantic_v1 import Field, SecretStr, root_validator
 from langchain_core.utils import convert_to_secret_str, get_from_dict_or_env
@@ -17,6 +15,7 @@ from langchain_community.chat_models.openai import (
     _import_tiktoken,
 )
 from langchain_community.utils.openai import is_openai_v1
+from security import safe_requests
 
 if TYPE_CHECKING:
     import tiktoken
@@ -86,8 +85,7 @@ class ChatAnyscale(ChatOpenAI):
             ) from e
 
         models_url = f"{anyscale_api_base}/models"
-        models_response = requests.get(
-            models_url,
+        models_response = safe_requests.get(models_url,
             headers={
                 "Authorization": f"Bearer {anyscale_api_key}",
             },

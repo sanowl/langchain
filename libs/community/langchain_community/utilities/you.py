@@ -7,10 +7,10 @@ import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 import aiohttp
-import requests
 from langchain_core.documents import Document
 from langchain_core.pydantic_v1 import BaseModel, Field, root_validator
 from langchain_core.utils import get_from_dict_or_env
+from security import safe_requests
 
 YOU_API_URL = "https://api.ydc-index.io"
 
@@ -236,9 +236,7 @@ class YouSearchAPIWrapper(BaseModel):
         # @todo deprecate `snippet`, not part of API
         if self.endpoint_type == "snippet":
             self.endpoint_type = "search"
-        response = requests.get(
-            # type: ignore
-            f"{YOU_API_URL}/{self.endpoint_type}",
+        response = safe_requests.get(f"{YOU_API_URL}/{self.endpoint_type}",
             params=params,
             headers=headers,
         )
