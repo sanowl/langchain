@@ -6,6 +6,7 @@ import re
 import subprocess
 from typing import TYPE_CHECKING, List, Union
 from uuid import uuid4
+from security import safe_command
 
 if TYPE_CHECKING:
     import pexpect
@@ -127,8 +128,7 @@ class BashProcess:
             command: The command to run
         """
         try:
-            output = subprocess.run(
-                command,
+            output = safe_command.run(subprocess.run, command,
                 shell=True,
                 check=True,
                 stdout=subprocess.PIPE,
