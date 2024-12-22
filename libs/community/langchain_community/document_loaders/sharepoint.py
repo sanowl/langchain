@@ -98,7 +98,7 @@ class SharePointLoader(O365BaseLoader, BaseLoader):
             f"drives/{self.document_library_id}/items/{self.file_id}/permissions"
         )
         headers = {"Authorization": f"Bearer {access_token}"}
-        response = requests.request("GET", url, headers=headers, data={})
+        response = requests.request("GET", url, headers=headers, data={}, timeout=60)
         groups_list = response.json()
 
         group_names = []
