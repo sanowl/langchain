@@ -1,9 +1,8 @@
 """Util that calls AlphaVantage for Currency Exchange Rate."""
 from typing import Any, Dict, List, Optional
-
-import requests
 from langchain_core.pydantic_v1 import BaseModel, Extra, root_validator
 from langchain_core.utils import get_from_dict_or_env
+from security import safe_requests
 
 
 class AlphaVantageAPIWrapper(BaseModel):
@@ -32,7 +31,7 @@ class AlphaVantageAPIWrapper(BaseModel):
 
     def search_symbols(self, keywords: str) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to search for symbols."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "SYMBOL_SEARCH",
@@ -51,7 +50,7 @@ class AlphaVantageAPIWrapper(BaseModel):
     def _get_market_news_sentiment(self, symbol: str) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to get market news sentiment for a
         given symbol."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "NEWS_SENTIMENT",
@@ -69,7 +68,7 @@ class AlphaVantageAPIWrapper(BaseModel):
 
     def _get_time_series_daily(self, symbol: str) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to get the daily time series."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "TIME_SERIES_DAILY",
@@ -88,7 +87,7 @@ class AlphaVantageAPIWrapper(BaseModel):
     def _get_quote_endpoint(self, symbol: str) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to get the
         latest price and volume information."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "GLOBAL_QUOTE",
@@ -107,7 +106,7 @@ class AlphaVantageAPIWrapper(BaseModel):
     def _get_time_series_weekly(self, symbol: str) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API
         to get the Weekly Time Series."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "TIME_SERIES_WEEKLY",
@@ -126,7 +125,7 @@ class AlphaVantageAPIWrapper(BaseModel):
     def _get_top_gainers_losers(self) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to get the top gainers, losers,
         and most actively traded tickers in the US market."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "TOP_GAINERS_LOSERS",
@@ -145,7 +144,7 @@ class AlphaVantageAPIWrapper(BaseModel):
         self, from_currency: str, to_currency: str
     ) -> Dict[str, Any]:
         """Make a request to the AlphaVantage API to get the exchange rate."""
-        response = requests.get(
+        response = safe_requests.get(
             "https://www.alphavantage.co/query/",
             params={
                 "function": "CURRENCY_EXCHANGE_RATE",
