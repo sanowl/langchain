@@ -39,7 +39,7 @@ class PolygonAPIWrapper(BaseModel):
             f"ticker={ticker}&"
             f"apiKey={self.polygon_api_key}"
         )
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         data = response.json()
 
         status = data.get("status", None)
@@ -55,7 +55,7 @@ class PolygonAPIWrapper(BaseModel):
         /v2/last/nbbo/{ticker}
         """
         url = f"{POLYGON_BASE_URL}v2/last/nbbo/{ticker}?apiKey={self.polygon_api_key}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         data = response.json()
 
         status = data.get("status", None)
@@ -76,7 +76,7 @@ class PolygonAPIWrapper(BaseModel):
             f"ticker={ticker}&"
             f"apiKey={self.polygon_api_key}"
         )
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         data = response.json()
 
         status = data.get("status", None)
@@ -110,7 +110,7 @@ class PolygonAPIWrapper(BaseModel):
             f"&adjusted={adjusted}"
             f"&sort={sort}"
         )
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         data = response.json()
 
         status = data.get("status", None)
