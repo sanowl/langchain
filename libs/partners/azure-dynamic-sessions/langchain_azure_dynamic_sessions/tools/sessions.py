@@ -13,6 +13,7 @@ import requests
 from azure.core.credentials import AccessToken
 from azure.identity import DefaultAzureCredential
 from langchain_core.tools import BaseTool
+from security import safe_requests
 
 try:
     _package_version = importlib.metadata.version("langchain-azure-dynamic-sessions")
@@ -246,7 +247,7 @@ class SessionsPythonREPLTool(BaseTool):
             "User-Agent": USER_AGENT,
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = safe_requests.get(api_url, headers=headers)
         response.raise_for_status()
 
         if local_file_path:
@@ -268,7 +269,7 @@ class SessionsPythonREPLTool(BaseTool):
             "User-Agent": USER_AGENT,
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = safe_requests.get(api_url, headers=headers)
         response.raise_for_status()
 
         response_json = response.json()
